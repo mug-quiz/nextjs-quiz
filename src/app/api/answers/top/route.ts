@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   const quizAnswers = await coll
     .find({ questionCode: code })
     .sort({
-      totalPoints: 1,
+      totalPoints: -1,
     })
     .limit(20)
     .project({
