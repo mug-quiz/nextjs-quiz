@@ -65,7 +65,7 @@ export async function POST(request: Request, context: any) {
 
   const answersWCorrect = questionsAnswers.map((data: any, index: number) => {
     const isCorrect = quiz.questions[index].correctAlternativeId === data.value;
-    const totalTime = data.endTimestamp - data.startTimestamp;
+    const totalTime = (data.endTimestamp - data.startTimestamp) / 1000;
     const points = isCorrect ? 100 - totalTime : 0;
 
     return {
@@ -74,15 +74,17 @@ export async function POST(request: Request, context: any) {
       answerId: data.questionId,
       correct: isCorrect,
       correctValue: quiz.questions[index].correctAlternativeId,
-      points: points < 0 ? 0 : points,
+      points: points < 0 ? 0 : points > 100 ? 100 : points,
     };
   });
 
-  const totalPoints = answersWCorrect.reduce((acc: number, curr: any) => {
-    return acc + curr.points;
-  }, 0);
+  const totalPoints = answersWCorrect
+    .reduce((acc: number, curr: any) => {
+      return acc + curr.points;
+    }, 0)
+    .toFixed();
 
-  const inserted = coll.updateOne(
+  const inserted = await coll.updateOne(
     {
       _id: ObjectId.createFromHexString(urlParams.id),
     },
