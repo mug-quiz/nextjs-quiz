@@ -64,14 +64,15 @@ export async function POST(request: Request, context: any) {
   }
 
   const answersWCorrect = questionsAnswers.map((data: any, index: number) => {
+    const isCorrect = quiz.questions[index].correctAlternativeId === data.value;
     const totalTime = data.endTimestamp - data.startTimestamp;
-    const points = 100 - totalTime;
+    const points = isCorrect ? 100 - totalTime : 0;
 
     return {
       answer: data.value,
       totalTime,
       answerId: data.questionId,
-      correct: quiz.questions[index].correctAlternativeId === data.value,
+      correct: isCorrect,
       correctValue: quiz.questions[index].correctAlternativeId,
       points: points < 0 ? 0 : points,
     };
@@ -98,4 +99,16 @@ export async function POST(request: Request, context: any) {
   });
 
   return Response.json(_return, { status: 200 });
+}
+
+export async function OPTIONS(request: Request) {
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }

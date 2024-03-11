@@ -78,3 +78,15 @@ export async function POST(request: Request) {
 
   return Response.json(_return);
 }
+
+export async function OPTIONS(request: Request) {
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
+}
