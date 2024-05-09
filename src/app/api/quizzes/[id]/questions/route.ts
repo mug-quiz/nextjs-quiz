@@ -1,16 +1,16 @@
-import { getConnection } from "@/config/database/mongo";
-import { ObjectId } from "mongodb";
+import { getConnection } from '@/lib/database/mongo';
+import { ObjectId } from 'mongodb';
 
 export async function GET(request: Request, context: any) {
   const conn = await getConnection();
-  const collection = conn.db.collection("quiz");
+  const collection = conn.db.collection('quiz');
 
   const urlParams = context.params;
 
   if (!ObjectId.isValid(urlParams.id)) {
     return Response.json(
       {
-        message: "Invalid quizz id",
+        message: 'Invalid quizz id',
       },
       { status: 400 }
     );
@@ -23,7 +23,7 @@ export async function GET(request: Request, context: any) {
   if (!quiz) {
     return Response.json(
       {
-        message: "Quiz not found",
+        message: 'Quiz not found',
       },
       { status: 404 }
     );
@@ -48,7 +48,7 @@ export interface Question {
 }
 export async function POST(request: Request) {
   const conn = await getConnection();
-  const collection = conn.db.collection("quiz");
+  const collection = conn.db.collection('quiz');
 
   const { question, alternatives, quizId, correctAlternativeId } =
     (await request.json()) as Question;
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   if (!question || !alternatives || !quizId || !correctAlternativeId) {
     return Response.json(
       {
-        message: "Invalid data",
+        message: 'Invalid data',
       },
       { status: 400 }
     );
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   if (!quiz) {
     return Response.json(
       {
-        message: "Quiz not found",
+        message: 'Quiz not found',
       },
       { status: 404 }
     );
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
     if (!alternative.text || !alternative.id || !alternative.order) {
       return Response.json(
         {
-          message: "Invalid data",
+          message: 'Invalid data',
         },
         { status: 400 }
       );
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
     if (alternatives.filter((a) => a.id === alternative.id).length > 1) {
       return Response.json(
         {
-          message: "Duplicate alternative id",
+          message: 'Duplicate alternative id',
         },
         { status: 400 }
       );
@@ -97,7 +97,7 @@ export async function POST(request: Request) {
   if (!alternatives.find((a) => a.id === correctAlternativeId)) {
     return Response.json(
       {
-        message: "Correct alternative not found",
+        message: 'Correct alternative not found',
       },
       { status: 400 }
     );
@@ -122,9 +122,9 @@ export async function POST(request: Request) {
 
 export async function OPTIONS(request: Request) {
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
   return new Response(null, {
     status: 204,

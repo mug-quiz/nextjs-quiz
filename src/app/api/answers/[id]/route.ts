@@ -1,5 +1,5 @@
-import { getConnection } from "@/config/database/mongo";
-import { ObjectId } from "mongodb";
+import { getConnection } from '@/lib/database/mongo';
+import { ObjectId } from 'mongodb';
 
 interface Answers {
   endTimestamp: number;
@@ -13,7 +13,7 @@ export async function POST(request: Request, context: any) {
   if (!ObjectId.isValid(urlParams.id)) {
     return Response.json(
       {
-        message: "Invalid answer id",
+        message: 'Invalid answer id',
       },
       { status: 400 }
     );
@@ -22,8 +22,8 @@ export async function POST(request: Request, context: any) {
   const questionsAnswers = await request.json();
 
   const conn = await getConnection();
-  const coll = conn.db.collection("answers");
-  const collQuizze = conn.db.collection("quiz");
+  const coll = conn.db.collection('answers');
+  const collQuizze = conn.db.collection('quiz');
 
   const answer = await coll.findOne({
     _id: ObjectId.createFromHexString(urlParams.id),
@@ -32,7 +32,7 @@ export async function POST(request: Request, context: any) {
   if (!answer) {
     return Response.json(
       {
-        message: "Answer not found",
+        message: 'Answer not found',
       },
       { status: 404 }
     );
@@ -45,7 +45,7 @@ export async function POST(request: Request, context: any) {
   if (!quiz) {
     return Response.json(
       {
-        message: "Quiz not found",
+        message: 'Quiz not found',
       },
       { status: 404 }
     );
@@ -57,7 +57,7 @@ export async function POST(request: Request, context: any) {
   if (quiz.questions.length < questionsAnswers.length) {
     return Response.json(
       {
-        message: "Invalid number of answers",
+        message: 'Invalid number of answers',
       },
       { status: 400 }
     );
@@ -105,9 +105,9 @@ export async function POST(request: Request, context: any) {
 
 export async function OPTIONS(request: Request) {
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
   return new Response(null, {
     status: 204,

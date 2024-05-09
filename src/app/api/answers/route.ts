@@ -1,4 +1,4 @@
-import { getConnection } from "@/config/database/mongo";
+import { getConnection } from '@/lib/database/mongo';
 
 interface Answer {
   email: string;
@@ -12,15 +12,15 @@ export async function POST(request: Request) {
   console.log(body);
 
   const conn = await getConnection();
-  const collection = conn.db.collection("answers");
-  const quizzesColl = conn.db.collection("quiz");
+  const collection = conn.db.collection('answers');
+  const quizzesColl = conn.db.collection('quiz');
 
   const { email, questionCode, name } = body as Answer;
 
   if (!email || !questionCode || !name) {
     return Response.json(
       {
-        message: "Invalid data",
+        message: 'Invalid data',
       },
       { status: 400 }
     );
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   if (!quiz) {
     return Response.json(
       {
-        message: "Quiz not found",
+        message: 'Quiz not found',
       },
       { status: 404 }
     );
@@ -57,9 +57,9 @@ export async function POST(request: Request) {
 
 export async function OPTIONS(request: Request) {
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
   return new Response(null, {
     status: 204,
