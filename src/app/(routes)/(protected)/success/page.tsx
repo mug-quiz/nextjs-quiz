@@ -7,10 +7,12 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import useAuth from '@/hooks/use-auth';
+import useCurrentQuiz from '@/hooks/use-current-quiz';
 import { useEffect, useState } from 'react';
 
 export default function SuccessPage() {
   const { clearToken } = useAuth();
+  const { currentQuiz } = useCurrentQuiz();
 
   const [seconds, setSeconds] = useState(7);
 
@@ -34,8 +36,8 @@ export default function SuccessPage() {
         <CardHeader className='space-y-6'>
           <img src='assets/mongoLogo.svg' alt='MUG 2024' className='h-12' />
           <CardDescription>
-            Você finalizou o questionário de brindes da primeira edição da MUG
-            2024. Obrigado por participar!
+            Você finalizou o questionário de brindes da{' '}
+            <strong>{currentQuiz?.name}</strong>. Obrigado por participar!
           </CardDescription>
           <CardDescription className='text-center text-sm text-primary'>
             A MUG-SC agradece a sua participação e estamos ansiosos para te ver

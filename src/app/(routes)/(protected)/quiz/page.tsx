@@ -45,6 +45,7 @@ export default function QuizPage() {
     abortQuiz,
     currentQuizCode,
     clearQuiz,
+    isFinishingQuiz,
   } = useCurrentQuiz();
 
   const [timeToNow, setTimeToNow] = useState(0);
@@ -86,11 +87,17 @@ export default function QuizPage() {
     if (!currentQuizCode) router.push('/');
   }, [currentQuizCode, router]);
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      handleClose();
+    }
+  };
+
   if (!hasStartedQuiz) return <NotStartedQuiz />;
 
   return (
     <div className='flex h-full w-full flex-col gap-8 border bg-background p-8'>
-      <Drawer open={drawerOpen}>
+      <Drawer open={drawerOpen} onOpenChange={handleOpenChange}>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Parece que você terminou!</DrawerTitle>
@@ -162,6 +169,7 @@ export default function QuizPage() {
           variant='secondary'
           size='lg'
           onClick={handlePreviousQuestion}
+          disabled={isFinishingQuiz}
         >
           <ArrowLeft className='mr-2 h-4 w-4' />
           Voltar
@@ -173,6 +181,7 @@ export default function QuizPage() {
             size='lg'
             variant='outline'
             onClick={handleFinish}
+            disabled={isFinishingQuiz}
           >
             Finalizar
             <Check className='ml-2 h-4 w-4' />

@@ -13,7 +13,8 @@ export default function useCurrentQuiz() {
     []
   );
 
-  const { mutateAsync: finishQuiz } = useFinishQuiz();
+  const { mutateAsync: finishQuiz, isPending: isFinishingQuiz } =
+    useFinishQuiz();
 
   const { clearToken } = useAuth();
 
@@ -130,5 +131,6 @@ export default function useCurrentQuiz() {
     currentQuizCode,
     clearQuiz,
     currentQuiz: data,
+    isFinishingQuiz,
   };
 }

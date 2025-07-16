@@ -11,12 +11,7 @@ export async function POST(request: Request, context: any) {
   const urlParams = context.params;
 
   if (!ObjectId.isValid(urlParams.id)) {
-    return Response.json(
-      {
-        message: 'Invalid answer id',
-      },
-      { status: 400 }
-    );
+    return Response.json({ message: 'Invalid answer id' }, { status: 400 });
   }
 
   const questionsAnswers = await request.json();
