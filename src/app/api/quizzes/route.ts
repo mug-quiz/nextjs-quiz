@@ -7,6 +7,19 @@ export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
 
   const code = params.get("code");
+  const lang = params.get("lang");
+
+  const getLangFilter = () => {
+    if (lang) {
+      return { lang }
+    }
+
+    return {
+      lang: {
+        $or: [{ lang: "pt-BR" }, { lang: { $exists: false } }],
+      },
+    };
+  };
 
   if (!code) {
     return Response.json(
@@ -17,7 +30,13 @@ export async function GET(request: Request) {
     );
   }
 
-  const quiz = await collection.findOne({ code }, { projection: { _id: 0 } });
+  const quiz = await collection.findOne(
+    {
+      code,
+      ...getLangFilter(),
+    },
+    { projection: { _id: 0 } }
+  );
 
   return Response.json(quiz);
 }
