@@ -1,16 +1,16 @@
-import { getConnection } from "@/config/database/mongo";
-import { ObjectId } from "mongodb";
+import { getConnection } from '@/lib/database/mongo';
+import { ObjectId } from 'mongodb';
 
 export async function GET(request: Request, context: any) {
   const conn = await getConnection();
-  const collection = conn.db.collection("quiz");
+  const collection = conn.db.collection('quiz');
 
   const urlParams = context.params;
 
   if (!ObjectId.isValid(urlParams.id)) {
     return Response.json(
       {
-        message: "Invalid quizz id",
+        message: 'Invalid quizz id',
       },
       { status: 400 }
     );
@@ -23,7 +23,7 @@ export async function GET(request: Request, context: any) {
   if (!quiz) {
     return Response.json(
       {
-        message: "Quiz not found",
+        message: 'Quiz not found',
       },
       { status: 404 }
     );
@@ -34,9 +34,9 @@ export async function GET(request: Request, context: any) {
 
 export async function OPTIONS(request: Request) {
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
   return new Response(null, {
     status: 204,

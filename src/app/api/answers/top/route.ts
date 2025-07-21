@@ -1,17 +1,16 @@
-import { getConnection } from "@/config/database/mongo";
-import { ObjectId } from "mongodb";
+import { getConnection } from '@/lib/database/mongo';
 
 export async function GET(request: Request) {
   const conn = await getConnection();
-  const coll = conn.db.collection("answers");
+  const coll = conn.db.collection('answers');
 
   const params = new URL(request.url).searchParams;
-  const code = params.get("code");
+  const code = params.get('code');
 
   if (!code) {
     return Response.json(
       {
-        message: "Code is required",
+        message: 'Code is required',
       },
       { status: 400 }
     );

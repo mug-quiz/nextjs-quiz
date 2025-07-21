@@ -1,4 +1,4 @@
-import { MongoClient, Db } from "mongodb";
+import { Db, MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
@@ -15,11 +15,11 @@ export async function getConnection(): Promise<{
   }
 
   if (!uri) {
-    throw new Error("Please define the MONGODB_URI environment variable");
+    throw new Error('Please define the MONGODB_URI environment variable');
   }
 
   if (!dbName) {
-    throw new Error("Please define the MONGODB_DB environment variable");
+    throw new Error('Please define the MONGODB_DB environment variable');
   }
 
   const client = new MongoClient(uri, {});
@@ -31,7 +31,7 @@ export async function getConnection(): Promise<{
     cachedDb = db;
     return { client, db };
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    throw new Error("Failed to connect to MongoDB");
+    console.error('Error connecting to MongoDB:', error);
+    throw new Error('Failed to connect to MongoDB');
   }
 }
