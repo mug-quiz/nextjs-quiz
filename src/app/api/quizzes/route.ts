@@ -14,9 +14,7 @@ export async function GET(request: Request) {
     }
 
     return {
-      lang: {
-        $or: [{ lang: "pt-BR" }, { lang: { $exists: false } }],
-      },
+      lang: "pt-BR",
     };
   };
 
@@ -32,7 +30,7 @@ export async function GET(request: Request) {
   const quiz = await collection.findOne(
     {
       code,
-      ...getLangFilter(),
+      $or: [getLangFilter(), { lang: { $exists: false } }],
     },
     { projection: { _id: 0 } }
   );
